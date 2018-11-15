@@ -1,6 +1,5 @@
 const { Model } = require('objection')
 const BaseModel = require('./connector')
-const Person = require('./person')
 
 class Animal extends BaseModel {
   static get tableName() {
@@ -17,18 +16,20 @@ class Animal extends BaseModel {
     }
   }
 
-  // static get relationMappings() {
-  //   return {
-  //     ownerid: {
-  //       relation: Model.BelongsToOneRelation,
-  //       modelClass: Person,
-  //       join: {
-  //         from: 'animals.ownerid',
-  //         to: 'people.id'
-  //       }
-  //     }  
-  //   }
-  // }
+  static get relationMappings() {
+    const Person = require('./person')
+
+    return {
+      owner: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Person,
+        join: {
+          from: 'animals.ownerid',
+          to: 'people.id'
+        }
+      }  
+    }
+  }
 }
 
 module.exports = Animal

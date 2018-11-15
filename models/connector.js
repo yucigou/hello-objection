@@ -114,7 +114,8 @@ class BaseModel extends Model {
 
     if (!saved) {
       // either model has no ID or the ID was not found in the database
-      saved = await this.constructor.query().insert(this.toJSON())
+      console.log("Objects to insert: ", this.toJSON())
+      saved = await this.constructor.query().insertGraph(this.toJSON())
     }
     console.log(`Saved ${this.constructor.name} with UUID ${saved.id}`)
     return saved

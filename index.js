@@ -21,17 +21,11 @@ const yuci = {
 	]
 }
 
-// const query = async () => {
-// 	console.log('Querying...')
-// 	return await Person.query()
-// }
-
-// const who = query()
-// console.log('Who: ', who)
-
-// Person.query().save(person)
-
 let person = new Person(yuci)
-person.save()
-
-// process.exit(0)
+person.save().then((val) => {
+	console.log("Objects inserted: ", val)
+}).catch((reason) => {
+    console.log('Handle rejected promise ('+reason+') here.');
+}).then(() =>{
+	person.destroy()
+})

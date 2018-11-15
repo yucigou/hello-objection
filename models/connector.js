@@ -9,7 +9,8 @@ require('dotenv').config();
 // Initialize knex.
 const knex = Knex({
   client: 'pg',
-  connection: process.env.DATABASE_URL
+  connection: process.env.DATABASE_URL,
+  pool: {min: 2, max: 10}
 });
 
 // Give the knex object to objection.
@@ -119,6 +120,14 @@ class BaseModel extends Model {
     }
     console.log(`Saved ${this.constructor.name} with UUID ${saved.id}`)
     return saved
+  }
+
+  destroy() {
+    knex.destroy().then(() => {
+      console.log('knex destroyed')
+    }).catch((err) => {
+      console.log('error knex destroyed: ', err)
+    })
   }
 }
 

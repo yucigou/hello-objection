@@ -1,13 +1,13 @@
 CREATE TABLE people (
     id UUID PRIMARY KEY,
-    first_name TEXT,
-    last_name TEXT
+    firstname TEXT,
+    lastname TEXT
 );
 
 CREATE TABLE animals (
     id UUID PRIMARY KEY,
     name TEXT,
-    owner_id UUID NOT NULL REFERENCES people
+    ownerid UUID NOT NULL REFERENCES people
 );
 
 CREATE TABLE users (
@@ -21,7 +21,7 @@ CREATE TABLE team (
 );
 
 CREATE TABLE users_team (
-    user_id UUID NOT NULL REFERENCES users,
-    team_id UUID NOT NULL REFERENCES team,
-    PRIMARY KEY(user_id, team_id)
+    userid UUID NOT NULL REFERENCES users,
+    teamid UUID NOT NULL REFERENCES team,
+    PRIMARY KEY(userid, teamid)
 );

@@ -122,7 +122,7 @@ class BaseModel extends Model {
     return saved
   }
 
-  destroy() {
+  static destroy() {
     knex.destroy().then(() => {
       console.log('knex destroyed')
     }).catch((err) => {

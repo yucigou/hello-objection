@@ -21,12 +21,12 @@ const yuci = {
 	]
 }
 
-describe('Objection operation', () => {
+describe('Objection operation on one-to-many', () => {
 	afterAll(() => {
 		Person.destroy()
 	})
 
-	test("Creating person", async () => {
+	test("Creating a person", async () => {
 		let person = new Person(yuci)
 		try {
 			let val = await person.save()
@@ -34,5 +34,13 @@ describe('Objection operation', () => {
 		} catch (err) {
 			console.log('Handle rejected promise ('+err+') here.');
 		}
+	})
+
+	test("Querying a person", async () => {
+		let val = await Person.query().where('id', yuciId)
+		console.log("Object returned: ", val)
+		expect(val).not.toBe(undefined)
+		expect(val.length).not.toBe(0)
+		expect(val[0].firstname).toBe(yuci.firstname)
 	})
 })

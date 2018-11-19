@@ -1,11 +1,13 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE people (
-    id UUID PRIMARY KEY,
+	id UUID DEFAULT uuid_generate_v4 () PRIMARY KEY,
     firstname TEXT,
     lastname TEXT
 );
 
 CREATE TABLE animals (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT uuid_generate_v4 () PRIMARY KEY,
     name TEXT,
     ownerid UUID NOT NULL REFERENCES people
 );

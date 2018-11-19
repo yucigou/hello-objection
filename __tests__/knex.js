@@ -1,6 +1,6 @@
 require('dotenv').config();
 const Knex = require('knex');
-const uuidv4 = require('uuid/v4');
+// const uuidv4 = require('uuid/v4');
 
 // Initialize knex.
 const knex = Knex({
@@ -22,11 +22,9 @@ describe('Test with Knex', () => {
 
 	test('Add a person', async () => {
 		const people = [{
-			id: uuidv4(),
 			firstname: 'Y',
 			lastname: 'G'
 		},{
-			id: uuidv4(),
 			firstname: 'H',
 			lastname: 'G'
 		}]

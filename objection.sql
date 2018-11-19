@@ -22,6 +22,18 @@ CREATE TABLE team (
 
 CREATE TABLE usersteam (                         
     userid UUID NOT NULL REFERENCES users,
-    teamid UUID NOT NULL REFERENCES team, 
-    PRIMARY KEY(userid, teamid)           
+    teamid UUID NOT NULL REFERENCES team,
+    PRIMARY KEY(userid, teamid)
 );                                               
+
+CREATE TABLE manuscript (
+	id UUID PRIMARY KEY,
+	title TEXT NOT NULL
+);
+
+CREATE TABLE usersteammanuscript (
+    userid UUID NOT NULL REFERENCES users,
+    teamid UUID NOT NULL REFERENCES team, 
+	manuscriptid UUID REFERENCES manuscript,
+    PRIMARY KEY(userid, teamid, manuscriptid)	
+);

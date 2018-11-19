@@ -1,17 +1,18 @@
 const User = require('../models/user');
 const Team = require('../models/team');
-const UserTeam = require('../models/userteam');
+const Manuscript = require('../models/manuscript');
+const UserTeamManuscript = require('../models/userteammanuscript');
 const uuidv4 = require('uuid/v4');
 
-describe('Objection many-to-many_02 operation: update join table', () => {
+describe('Objection many-to-many operation: update triple-join table', () => {
 	const user1 = {
 		id: uuidv4(),
-		email: 'user1@example.com'
+		email: 'user1@example1.com'
 	}
 
 	const user2 = {
 		id: uuidv4(),
-		email: 'user2@example.com'
+		email: 'user2@example1.com'
 	}
 
 	const team1 = {
@@ -24,9 +25,26 @@ describe('Objection many-to-many_02 operation: update join table', () => {
 		role: 'Submitter'
 	}
 
-	const userTeam1 = {
+	const manuscript1 = {
+		id: uuidv4(),
+		title: 'TCP/IP Networking'
+	}
+
+	const manuscript2 = {
+		id: uuidv4(),
+		title: 'Literature Services'
+	}
+
+	const userTeamManuscript1 = {
+		userid: user1.id,
+		teamid: team2.id,
+		manuscriptid: manuscript1.id
+	}
+
+	const userTeamManuscript2 = {
 		userid: user2.id,
-		teamid: team1.id
+		teamid: team1.id,
+		manuscriptid: manuscript2.id
 	}
 
 	test("Creating two users", async () => {
@@ -65,10 +83,23 @@ describe('Objection many-to-many_02 operation: update join table', () => {
 		}
 	})
 
-	test("Adding a user to a team", async () => {
-		// Add user2 to team1
-		let userTeam = new UserTeam(userTeam1)
-		let val = await userTeam.save()
+	test("Creating two manuscripts", async () => {
+		let manuscript = new Manuscript(manuscript1)
+		let val = await manuscript.save()
+		console.log("Objects inserted: ", val)
+
+		manuscript = new Manuscript(manuscript2)
+		val = await manuscript.save()
+		console.log("Objects inserted: ", val)
+	})
+
+	test("Adding two join relations", async () => {
+		let userTeamManuscript = new UserTeamManuscript(userTeamManuscript1)
+		let val = await userTeamManuscript.save()
+		console.log("Objects upserted: ", val)
+
+		userTeamManuscript = new UserTeamManuscript(userTeamManuscript2)
+		val = await userTeamManuscript.save()
 		console.log("Objects upserted: ", val)
 	})
 

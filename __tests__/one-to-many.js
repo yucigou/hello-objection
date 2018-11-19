@@ -26,12 +26,13 @@ describe('Objection operation', () => {
 		Person.destroy()
 	})
 
-	test("Creating person", () => {
+	test("Creating person", async () => {
 		let person = new Person(yuci)
-		person.save().then((val) => {
+		try {
+			let val = await person.save()
 			console.log("Objects inserted: ", val)
-		}).catch((reason) => {
-			console.log('Handle rejected promise ('+reason+') here.');
-		})		
+		} catch (err) {
+			console.log('Handle rejected promise ('+err+') here.');
+		}
 	})
 })

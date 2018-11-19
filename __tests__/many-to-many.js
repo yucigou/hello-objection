@@ -23,12 +23,14 @@ describe('Objection many-to-many operation', () => {
 		User.destroy()
 	})
 
-	test("Creating a user with two teams", () => {
+	test("Creating a user with two teams", async () => {
 		let user = new User(yuci)
-		user.save().then((val) => {
+
+		try {
+			let val = await user.save()
 			console.log("Objects inserted: ", val)
-		}).catch((reason) => {
-			console.log('Handle rejected promise ('+reason+') here.');
-		})	
+		} catch (err) {
+			console.log('Handle rejected promise ('+err+') here.');
+		}
 	})
 })

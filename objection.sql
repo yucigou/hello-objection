@@ -20,9 +20,8 @@ CREATE TABLE team (
     role TEXT NOT NULL
 );
 
-CREATE TABLE usersteam (
-    id UUID PRIMARY KEY,
+CREATE TABLE usersteam (                         
     userid UUID NOT NULL REFERENCES users,
-    teamid UUID NOT NULL REFERENCES team,
-    UNIQUE (userid, teamid)
-);
+    teamid UUID NOT NULL REFERENCES team, 
+    PRIMARY KEY(userid, teamid)           
+);                                               

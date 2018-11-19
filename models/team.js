@@ -25,8 +25,8 @@ class Team extends BaseModel {
         join: {
           from: 'team.id',
           through: {
-            from: 'users_team.team_id',
-            to: 'users_team.user_id'
+            from: 'usersteam.teamid',
+            to: 'usersteam.userid'
           },
           to: 'users.id'
         }

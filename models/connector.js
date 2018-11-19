@@ -44,6 +44,7 @@ class BaseModel extends Model {
         this[prop] = properties[prop]
       } else {
         console.log('prop: ', prop)
+        debugger
         throw validationError(prop, this.constructor.name)
       }
     })
@@ -105,6 +106,23 @@ class BaseModel extends Model {
     return baseSchema
   }
 
+  async insert() {
+    let saved
+    if (this.id) {
+      saved = await this.constructor
+        .query()
+        .patchAndFetchById(this.id, this.toJSON())
+    }
+
+    if (!saved) {
+      // either model has no ID or the ID was not found in the database
+      // console.log("Objects to insert: ", this.toJSON())
+      saved = await this.constructor.query().insert(this.toJSON())
+    }
+    // console.log(`Saved ${this.constructor.name} with UUID ${saved.id}`)
+    return saved
+  }
+
   async save() {
     let saved
     if (this.id) {
@@ -115,11 +133,28 @@ class BaseModel extends Model {
 
     if (!saved) {
       // either model has no ID or the ID was not found in the database
-      console.log("Objects to insert: ", this.toJSON())
+      // console.log("Objects to insert: ", this.toJSON())
       saved = await this.constructor.query().insertGraph(this.toJSON())
     }
-    console.log(`Saved ${this.constructor.name} with UUID ${saved.id}`)
+    // console.log(`Saved ${this.constructor.name} with UUID ${saved.id}`)
     return saved
+  }
+
+  async upsert() {
+    let upserted
+    /*if (this.id) {
+      upserted = await this.constructor
+        .query()
+        .patchAndFetchById(this.id, this.toJSON())
+    }*/
+
+    if (!upserted) {
+      // either model has no ID or the ID was not found in the database
+      console.log("Objects to upsert: ", this.toJSON())
+      upserted = await this.constructor.query().upsertGraph(this.toJSON(), { relate: true, update: true })
+    }
+    console.log(`Upserted ${this.constructor.name} with UUID ${upserted.id}`)
+    return upserted
   }
 
   static destroy() {

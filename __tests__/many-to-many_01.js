@@ -18,7 +18,7 @@ const yuci = {
 	]
 }
 
-describe('Objection many-to-many operation', () => {
+describe('Objection many-to-many operation: insertGraph', () => {
 	afterAll(() => {
 		User.destroy()
 	})

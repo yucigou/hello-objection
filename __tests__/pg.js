@@ -14,11 +14,8 @@ const createPerson = () => {
 }
 
 describe('pg database operation', () => {
-  test("Creating person", () => {
-    createPerson().then(({ rows }) => {
-      console.log('rows', rows)
-    }).catch((error) => {
-      console.log('error: ', error);
-    })
+  test("Creating person", async () => {
+  	let {rows} = await createPerson();
+  	console.log('rows', rows)
   })
 })

@@ -1,24 +1,24 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE people (
-	id UUID DEFAULT uuid_generate_v4 () PRIMARY KEY,
+	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     firstname TEXT,
     lastname TEXT
 );
 
 CREATE TABLE animals (
-    id UUID DEFAULT uuid_generate_v4 () PRIMARY KEY,
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     name TEXT,
     ownerid UUID NOT NULL REFERENCES people
 );
 
 CREATE TABLE users (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     email TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE team (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     role TEXT NOT NULL
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE usersteam (
 );                                               
 
 CREATE TABLE manuscript (
-	id UUID PRIMARY KEY,
+	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
 	title TEXT NOT NULL
 );
 

@@ -22,6 +22,7 @@ CREATE TABLE team (
     role TEXT NOT NULL
 );
 
+-- users_team --
 CREATE TABLE usersteam (
     userid UUID NOT NULL REFERENCES users,
     teamid UUID NOT NULL REFERENCES team,
@@ -33,9 +34,28 @@ CREATE TABLE manuscript (
     title TEXT NOT NULL
 );
 
+-- users_team_manuscript --
 CREATE TABLE usersteammanuscript (
     userid UUID NOT NULL REFERENCES users,
     teamid UUID NOT NULL REFERENCES team, 
     manuscriptid UUID REFERENCES manuscript,
     PRIMARY KEY(userid, teamid, manuscriptid)
 );
+
+CREATE TABLE organization (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    name TEXT NOT NULL
+);
+
+-- oranization_manuscript_team_users --
+CREATE TABLE omtu (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    userid UUID NOT NULL REFERENCES users,
+    teamid UUID NOT NULL REFERENCES team,
+    manuscriptid UUID REFERENCES manuscript,
+    organizationid UUID REFERENCES organization,
+    UNIQUE (userid, teamid, manuscriptid, organizationid)
+);
+
+CREATE UNIQUE INDEX omtu_m_uni_idx ON omtu (manuscriptid) WHERE organizationid IS NULL;
+CREATE UNIQUE INDEX dist_o_uni_idx ON omtu (organizationid) WHERE manuscriptid IS NULL;

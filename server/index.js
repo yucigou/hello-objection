@@ -9,13 +9,6 @@ require('../config/passport')(passport, db)
 require('../config/express')(app, passport)
 require('../config/routes')(app, passport)
 
-app.use(passport.initialize())
-
-// I prefer not to use persistent login sessions
-/* app.use(passport.session()) */
-
-app.get('/', (req, res) => res.send('Hello World!'))
-
 const server = app.listen(port, () => {
 	console.log('Express app started on port ' + port)
 })

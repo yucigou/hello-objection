@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
 
+/* See: https://www.npmjs.com/package/passport-local
+ */
 module.exports = (passport, db) => {
 	passport.use(new LocalStrategy((email, password, cb) => {
 		console.log("Authenticating user: ", email)

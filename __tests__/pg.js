@@ -2,7 +2,7 @@ require('dotenv').config()
 // const uuidv4 = require('uuid/v4');
 const { Pool, Client } = require('pg')
 
-console.log("process.env.NODE_ENV: ", process.env.NODE_ENV)
+// console.log("process.env.NODE_ENV: ", process.env.NODE_ENV)
 
 // pools will use environment variables
 // for connection information

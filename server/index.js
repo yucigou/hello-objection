@@ -10,7 +10,9 @@ require('../config/express')(app, passport)
 require('../config/routes')(app, passport)
 
 app.use(passport.initialize())
-app.use(passport.session())
+
+// I prefer not to use persistent login sessions
+/* app.use(passport.session()) */
 
 app.get('/', (req, res) => res.send('Hello World!'))
 

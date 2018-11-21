@@ -28,11 +28,15 @@ module.exports = (passport, db) => {
 		})
 	}))
 
+	// I prefer not to use persistent login sessions
+	/*
 	passport.serializeUser((user, done) => {
+		console.log('serializeUser...')
 		done(null, user.id)
 	})
 
 	passport.deserializeUser((id, cb) => {
+		console.log('deserializeUser...')
 		db.query('SELECT id, email FROM users WHERE id = $1', [parseInt(id, 10)], (err, results) => {
 			if(err) {
 				console.log('Error when selecting user on session deserialize', err)
@@ -41,5 +45,5 @@ module.exports = (passport, db) => {
 
 			cb(null, results.rows[0])
 		})
-	})
+	})*/
 }

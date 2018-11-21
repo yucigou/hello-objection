@@ -1,8 +1,7 @@
 module.exports = {
 	login: (req, res) => {
-		console.log("User logged in")
-
 		const { user } = req
+		console.log("User logged in: ", user)
 
 		res.json(user)
 	},

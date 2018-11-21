@@ -2,15 +2,15 @@ const jwt = require('jsonwebtoken');
 
 // https://www.npmjs.com/package/jsonwebtoken
 const generateJWT = ({id, email}) => {
-  const today = new Date();
-  const expirationDate = new Date(today);
-  expirationDate.setDate(today.getDate() + 60);
+	const today = new Date();
+	const expirationDate = new Date(today);
+	expirationDate.setDate(today.getDate() + 60);
 
-  return jwt.sign({
-    id,
-    email,
-    exp: parseInt(expirationDate.getTime() / 1000, 10),
-  }, process.env.JWT_SECRET);
+	return jwt.sign({
+		id,
+		email,
+		exp: parseInt(expirationDate.getTime() / 1000, 10),
+	}, process.env.JWT_SECRET);
 }
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
 		req.session.destroy((err) => {
 			if(err) return next(err)
 
-			req.logout()
+				req.logout()
 
 			res.sendStatus(200)
 		})

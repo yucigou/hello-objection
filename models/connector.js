@@ -4,8 +4,6 @@ const pg = require('pg');
 const { merge } = require('lodash')
 const config = require('config')
 
-require('dotenv').config();
-
 // Initialize knex.
 const knex = Knex({
   client: 'pg',

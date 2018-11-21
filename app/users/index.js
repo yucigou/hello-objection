@@ -1,4 +1,3 @@
-require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 // https://www.npmjs.com/package/jsonwebtoken

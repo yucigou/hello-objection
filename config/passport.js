@@ -35,19 +35,21 @@ module.exports = (passport, db) => {
 
 	passport.use(new BearerStrategy((token, done) => {
 		jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-			console.log("err: ", err)
 			console.log("decoded: ", decoded)
 
-			if (err) return done(null)
+			if (err) {
+				console.log('err: ', err)
+				return done(null)
+			}
 
-				return done(null, {
-					email: decoded.email,
-					id: decoded.id,
-				}, {
-					email: decoded.email,
-					id: decoded.id,
-					token,
-				})
+			return done(null, {
+				email: decoded.email,
+				id: decoded.id,
+			}, {
+				email: decoded.email,
+				id: decoded.id,
+				token,
+			})
 		})
 	}))
 

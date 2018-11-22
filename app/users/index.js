@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { auth } = require('../../data/helper')
 
 // https://www.npmjs.com/package/jsonwebtoken
 const generateJWT = ({id, email}) => {
@@ -16,6 +17,14 @@ const generateJWT = ({id, email}) => {
 module.exports = {
 	login: (req, res) => {
 		const { user } = req
+		console.log("User logged in: ", user)
+
+		user.jwt = generateJWT(user)
+		res.json(user)
+	},
+
+	signin: async (req, res) => {
+		const user = await auth(req, res)
 		console.log("User logged in: ", user)
 
 		user.jwt = generateJWT(user)

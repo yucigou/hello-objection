@@ -27,15 +27,20 @@ module.exports = (app, passport) => {
 		}),
 		users.login)
 
+	app.post('/api/signin',
+		users.signin)
+
 	app.get('/api/logout', users.logout)
 
 	/* https://medium.com/@jeffrey.allen.lewis/graphql-migrating-from-apollo-server-express-1-0-to-2-0-be80f5c61bee
 	 */
-	app.use('/graphql', bodyParser.json(), authBearerAndPublic, graphqlExpress(req => ({
+	app.use('/graphql', bodyParser.json(), authBearerAndPublic, graphqlExpress((req, res) => ({
 	// app.use('/api', auth.optional, graphqlExpress(req => ({
       schema,
       context: {
-        user: req.user
+        user: req.user,
+        req,
+        res
       }
     })))
 }

@@ -15,6 +15,7 @@ const typeDefs = `
     type Mutation {
       signup (email: String!, password: String!): String
       login (email: String!, password: String!): String
+      signin (email: String!, password: String!): String
     }
     `
 module.exports = makeExecutableSchema({ typeDefs, resolvers })

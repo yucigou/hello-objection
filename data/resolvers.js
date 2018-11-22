@@ -2,6 +2,7 @@ require('dotenv').config()
 const bcrypt = require('bcrypt')
 const jsonwebtoken = require('jsonwebtoken')
 const User = require('../models/user')
+const { auth } = require('./helper')
 
 const resolvers = {
   Query: {
@@ -31,7 +32,7 @@ const resolvers = {
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: '1y' }
-      )
+        )
     },
 
     // Handles user login
@@ -53,7 +54,19 @@ const resolvers = {
         { id: user.id, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
-      )
+        )
+    },
+
+    async signin (_, { email, password }, ctx) {
+      const body = {username: email, password}
+      ctx.req.body = body
+      const user = await auth(ctx.req, ctx.res)
+      console.log('Passport signed in user: ', user)
+      return jsonwebtoken.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' }
+        )
     }
   }
 }

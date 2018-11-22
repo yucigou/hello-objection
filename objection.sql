@@ -14,7 +14,8 @@ CREATE TABLE animals (
 
 CREATE TABLE users (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    email TEXT UNIQUE NOT NULL
+    email TEXT UNIQUE NOT NULL,
+    password TEXT
 );
 
 CREATE TABLE team (

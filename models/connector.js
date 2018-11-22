@@ -1,8 +1,14 @@
-const { Model } = require('objection');
+const { Model, ValidationError } = require('objection');
 const Knex = require('knex');
 const pg = require('pg');
 const { merge } = require('lodash')
 const config = require('config')
+
+const validationError = (prop, className) =>
+  new ValidationError({
+    type: 'ModelValidation',
+    message: `${prop} is not a property in ${className}'s schema`,
+  })
 
 // Initialize knex.
 const knex = Knex({
@@ -31,6 +37,10 @@ class BaseModel extends Model {
 
         throw validationError(prop, obj.constructor.name)
       },
+
+      // get: (target, property, receiver) => {
+      //   return target[property]
+      // }
     }
 
     return new Proxy(this, handler)

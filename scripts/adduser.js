@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const {query} = require('../db')
 const uuidv4 = require('uuid/v4');
 
-const saltRounds = 10 //the higher the better - the longer it takes to generate & compare
+const saltRounds = process.env.BCRYPT_SALT_ROUNDS //the higher the better - the longer it takes to generate & compare
 const password = bcrypt.hashSync(process.env.USER_PASSWORD, saltRounds)
 
 const insert = async () => {

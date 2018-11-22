@@ -11,7 +11,8 @@ class User extends BaseModel {
     return {
       properties: {
         id: { type: ['uuid'] },
-        email: { type : ['string'] }
+        email: { type : ['string'] },
+        password: { type : ['string'] }
       }
     }
   }
@@ -31,6 +32,22 @@ class User extends BaseModel {
         }
       }  
     }
+  }
+
+  static async findOne(email) {
+    const user = await User.query().where("email", email)
+    console.log('user: ', user)
+    return user && user.length > 0 ? user[0] : null
+  }
+
+  static async findById(id) {
+    const user = await User.query().where("id", id)
+    console.log('user: ', user)
+    return user && user.length > 0 ? user[0] : null
+  }
+
+  static async create({email, password}) {
+    return await User.query().upsertGraph({email, password})
   }
 }
 

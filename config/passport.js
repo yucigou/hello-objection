@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const LocalStrategy = require('passport-local').Strategy
 const BearerStrategy = require('passport-http-bearer').Strategy
+const AnonymousStrategy = require('passport-anonymous').Strategy;
 const jwt = require('jsonwebtoken')
 
 /* See: https://www.npmjs.com/package/passport-local
@@ -49,6 +50,8 @@ module.exports = (passport, db) => {
 				})
 		})
 	}))
+
+	passport.use(new AnonymousStrategy());
 
 	// I prefer not to use persistent login sessions
 	/*

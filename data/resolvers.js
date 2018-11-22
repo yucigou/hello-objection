@@ -20,7 +20,6 @@ const resolvers = {
   Mutation: {
     // Handle user signup
     async signup (_, { email, password }) {
-      console.log('process.env.BCRYPT_SALT_ROUNDS: ', process.env.BCRYPT_SALT_ROUNDS)
       const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS, 10))
       const user = await User.create({
         email,

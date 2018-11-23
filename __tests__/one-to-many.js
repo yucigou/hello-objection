@@ -1,64 +1,55 @@
 const Person = require('../models/person');
 const Animal = require('../models/animal');
-const uuidv4 = require('uuid/v4');
 
-const yuciId = uuidv4()
+describe('Objection_Ops_one-to-many_01', () => {
+	const yuci = {
+		firstname: 'Yuci',
+		lastname: 'Gou',
+		animals: [
+			{
+				name: 'Book'
+			},
+			{
+				name: 'Tiger'
+			}
+		]
+	}
 
-const yuci = {
-	id: yuciId,
-	firstname: 'Yuci',
-	lastname: 'Gou',
-	animals: [
-		{
-			id: uuidv4(),
-			name: 'Book',
-			ownerid: yuciId
-		},
-		{
-			id: uuidv4(),
-			name: 'Tiger',
-			ownerid: yuciId
-		}
-	]
-}
+	let inserted
 
-describe('Objection operation on one-to-many', () => {
-	test("Creating a person", async () => {
+	test("Objection_Ops_one-to-many_01_creating_a_person", async () => {
 		let person = new Person(yuci)
-		try {
-			let val = await person.save()
-			console.log("Objects inserted: ", val)
-		} catch (err) {
-			console.log('Handle rejected promise ('+err+') here.');
-		}
+		inserted = await person.save()
+		console.log("Objects inserted: ", inserted)
 	})
 
-	test("Querying a person", async () => {
-		let val = await Person.query().where('id', yuciId)
+	test("Objection_Ops_one-to-many_01_querying_a_person", async () => {
+		let val = await Person.query().where('id', inserted.id).eager('animals')
 		console.log("Object returned: ", val)
+		
 		expect(val).not.toBe(undefined)
 		expect(val.length).not.toBe(0)
 		expect(val[0].firstname).toBe(yuci.firstname)
+
+		let animals = val[0].animals
+		expect(animals).not.toBe(undefined)
+		expect(animals.length).toBe(2)
+		expect([yuci.animals[0].name, yuci.animals[1].name]).toContain(animals[0].name)
 	})
 })
 
-describe('Objection operation on one-to-many: step by step', () => {
+describe('Objection_Ops_one-to-many_02', () => {
 	const person1 = {
-		id: uuidv4(),
 		firstname: 'Adam',
 		lastname: 'Smith'
 	}
 
 	const animal1 = {
-		id: uuidv4(),
-		name: 'Salt',
-		ownerid: person1.id
+		name: 'Salt'
 	}
 
 	const animal2 = {
-		id: uuidv4(),
-		name: 'Fibre',
-		ownerid: person1.id
+		name: 'Fibre'
 	}
 
 
@@ -66,17 +57,20 @@ describe('Objection operation on one-to-many: step by step', () => {
 		Person.destroy()
 	})
 
-	test("Creating a person without animals", async () => {
+	let inserted
+	test("Objection_Ops_one-to-many_02_creating_a_person_without_animals", async () => {
 		let person = new Person(person1)
-		let val = await person.save()
-		console.log("Objects inserted: ", val)
+		inserted = await person.save()
+		console.log("Objects inserted: ", inserted)
 	})
 
-	test("Creating animals", async () => {
+	test("Objection_Ops_one-to-many_02_creating_animals", async () => {
+		animal1.ownerid = inserted.id
 		let animal = new Animal(animal1)
 		let val = await animal.save()
 		console.log("Objects inserted: ", val)
 
+		animal2.ownerid = inserted.id
 		animal = new Animal(animal2)
 		val = await animal.save()
 		console.log("Objects inserted: ", val)

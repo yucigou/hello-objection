@@ -1,4 +1,5 @@
-const { Model, ValidationError } = require('objection');
+require('dotenv').config();
+const { Model, ValidationError, transaction } = require('objection');
 const Knex = require('knex');
 const pg = require('pg');
 const { merge } = require('lodash')
@@ -132,19 +133,20 @@ class BaseModel extends Model {
   }
 
   async save() {
+    let trx
     let saved
-    if (this.id) {
-      saved = await this.constructor
-        .query()
-        .patchAndFetchById(this.id, this.toJSON())
+    try {
+      trx = await transaction.start(knex)
+      console.log('Objects to insert is ', this.toJSON())
+      saved = await this.constructor.query(trx).upsertGraph(this.toJSON())
+      console.log(`Saved ${this.constructor.name} with UUID ${saved.id}`)
+      await trx.commit()
+    } catch (error) {
+      await trx.rollback()
+      console.log('Nothing was inserted')
+      console.log(error)
     }
 
-    if (!saved) {
-      // either model has no ID or the ID was not found in the database
-      // console.log("Objects to insert: ", this.toJSON())
-      saved = await this.constructor.query().insertGraph(this.toJSON())
-    }
-    // console.log(`Saved ${this.constructor.name} with UUID ${saved.id}`)
     return saved
   }
 

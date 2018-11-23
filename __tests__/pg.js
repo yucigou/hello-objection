@@ -13,7 +13,7 @@ const createPerson = () => {
     return pool.query(`INSERT INTO people (firstname, lastname) VALUES($1, $2) RETURNING *`, values);
 }
 
-describe('pg database operation', () => {
+describe('Pure-postgres database operation', () => {
   test("Creating person", async () => {
   	let {rows} = await createPerson();
   	console.log('rows', rows)

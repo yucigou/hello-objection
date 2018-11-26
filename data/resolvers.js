@@ -1,5 +1,4 @@
 require('dotenv').config()
-const bcrypt = require('bcrypt')
 const jsonwebtoken = require('jsonwebtoken')
 const User = require('../models/user')
 const { auth } = require('./helper')
@@ -20,50 +19,56 @@ const resolvers = {
 
   Mutation: {
     // Handle user signup
-    async signup (_, { email, password }) {
-      const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS, 10))
-      const user = await User.create({
-        email,
-        password: await bcrypt.hash(password, salt)
-      })
+    async signup (_, { username, email, password }) {
+      let savedUser
+      if (!username || !email || !password) {
+        return 'username, email or password must not be empty'
+      }
+
+      try {
+        const user = new User()
+        await user.addIdentity(username, email, password)
+        savedUser = await user.save()
+      } catch (error) {
+        console.log('Forwarding error')
+        return error
+      }
 
       // return json web token
       return jsonwebtoken.sign(
-        { id: user.id, email: user.email },
+        { id: savedUser.id },
         process.env.JWT_SECRET,
         { expiresIn: '1y' }
-        )
+      )
     },
 
     // Handles user login
-    async login (_, { email, password }) {
-      const user = await User.findOne(email)
-
-      if (!user) {
-        throw new Error('No user with that email')
+    async login (_, { username, password }) {
+      let userId
+      try {
+        userId = await User.validateUser(username, password)
+      } catch (error) {
+        throw error
       }
 
-      const valid = await bcrypt.compare(password, user.password)
-
-      if (!valid) {
-        throw new Error('Incorrect password')
-      }
+      console.log('user ID: ', userId)
 
       // return json web token
       return jsonwebtoken.sign(
-        { id: user.id, email: user.email },
+        { id: userId },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
-        )
+      )
     },
 
-    async signin (_, { email, password }, ctx) {
-      const body = {username: email, password}
+    // Handles user login with Passport
+    async signin (_, { username, password }, ctx) {
+      const body = { username, password }
       ctx.req.body = body
       const user = await auth(ctx.req, ctx.res)
       console.log('Passport signed in user: ', user)
       return jsonwebtoken.sign(
-        { id: user.id, email: user.email },
+        { id: user.id },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
         )

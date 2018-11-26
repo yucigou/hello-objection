@@ -1,4 +1,5 @@
 require('dotenv').config();
+const uuid = require('uuid')
 const { Model, ValidationError, transaction, snakeCaseMappers } = require('objection');
 const Knex = require('knex');
 const pg = require('pg');
@@ -37,11 +38,7 @@ class BaseModel extends Model {
         }
 
         throw validationError(prop, obj.constructor.name)
-      },
-
-      // get: (target, property, receiver) => {
-      //   return target[property]
-      // }
+      }
     }
 
     return new Proxy(this, handler)
@@ -73,6 +70,15 @@ class BaseModel extends Model {
       (this.constructor.relationMappings &&
         this.constructor.relationMappings[prop])
     )
+  }
+
+  $beforeInsert() {
+    this.id = this.id || uuid.v4()
+    this.created = new Date().toISOString()
+  }
+
+  $beforeUpdate() {
+    this.updated = new Date().toISOString()
   }
 
   static get jsonSchema() {
@@ -121,23 +127,6 @@ class BaseModel extends Model {
     return baseSchema
   }
 
-  async insert() {
-    let saved
-    if (this.id) {
-      saved = await this.constructor
-        .query()
-        .patchAndFetchById(this.id, this.toJSON())
-    }
-
-    if (!saved) {
-      // either model has no ID or the ID was not found in the database
-      // console.log("Objects to insert: ", this.toJSON())
-      saved = await this.constructor.query().insert(this.toJSON())
-    }
-    // console.log(`Saved ${this.constructor.name} with UUID ${saved.id}`)
-    return saved
-  }
-
   async save() {
     let trx
     let saved
@@ -151,26 +140,10 @@ class BaseModel extends Model {
       await trx.rollback()
       console.log('Nothing was inserted')
       console.log(error)
+      throw error
     }
 
     return saved
-  }
-
-  async upsert() {
-    let upserted
-    /*if (this.id) {
-      upserted = await this.constructor
-        .query()
-        .patchAndFetchById(this.id, this.toJSON())
-    }*/
-
-    if (!upserted) {
-      // either model has no ID or the ID was not found in the database
-      console.log("Objects to upsert: ", this.toJSON())
-      upserted = await this.constructor.query().upsertGraph(this.toJSON(), { relate: true, update: true })
-    }
-    console.log(`Upserted ${this.constructor.name} with UUID ${upserted.id}`)
-    return upserted
   }
 
   static destroy() {

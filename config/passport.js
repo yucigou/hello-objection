@@ -7,10 +7,10 @@ const jwt = require('jsonwebtoken')
 /* See: https://www.npmjs.com/package/passport-local
 */
 module.exports = (passport, db) => {
-	passport.use(new LocalStrategy((email, password, cb) => {
-		console.log("Authenticating user: ", email)
+	passport.use(new LocalStrategy((username, password, cb) => {
+		console.log("Authenticating user: ", username)
 
-		db.query('SELECT id, email, password FROM users WHERE email=$1', [email], (err, result) => {
+		db.query('SELECT u.id as id, i.password_hash as password FROM users u INNER JOIN identity i on u.id = i.user_id WHERE i.username =$1', [username], (err, result) => {
 			if(err) {
 				console.log('Error when selecting user on login', err)
 				return cb(err)
@@ -22,7 +22,7 @@ module.exports = (passport, db) => {
 					console.log("Authentication result: ", res)
 
 					if(res) {
-						cb(null, { id: first.id, email: first.email })
+						cb(null, { id: first.id })
 					} else {
 						cb(null, false)
 					}
@@ -43,10 +43,8 @@ module.exports = (passport, db) => {
 			}
 
 			return done(null, {
-				email: decoded.email,
 				id: decoded.id,
 			}, {
-				email: decoded.email,
 				id: decoded.id,
 				token,
 			})

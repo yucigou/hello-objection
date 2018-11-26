@@ -5,7 +5,6 @@ const resolvers = require('./resolvers')
 const typeDefs = `
     type User {
       id: ID!
-      email: String!
     }
 
     type Query {
@@ -13,9 +12,9 @@ const typeDefs = `
     }
 
     type Mutation {
-      signup (email: String!, password: String!): String
-      login (email: String!, password: String!): String
-      signin (email: String!, password: String!): String
+      signup (username: String!, email: String!, password: String!): String
+      login (username: String!, password: String!): String
+      signin (username: String!, password: String!): String
     }
     `
 module.exports = makeExecutableSchema({ typeDefs, resolvers })

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Model, ValidationError, transaction } = require('objection');
+const { Model, ValidationError, transaction, snakeCaseMappers } = require('objection');
 const Knex = require('knex');
 const pg = require('pg');
 const { merge } = require('lodash')
@@ -45,6 +45,12 @@ class BaseModel extends Model {
     }
 
     return new Proxy(this, handler)
+  }
+
+  static get columnNameMappers() {
+    // If your columns are UPPER_SNAKE_CASE you can
+    // use snakeCaseMappers({ upperCase: true })
+    return snakeCaseMappers();
   }
 
   updateProperties(properties) {

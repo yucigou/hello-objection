@@ -1,6 +1,5 @@
 const { Model } = require('objection')
 const BaseModel = require('./connector')
-const Team = require('./team')
 
 class User extends BaseModel {
   static get tableName() {
@@ -11,26 +10,23 @@ class User extends BaseModel {
     return {
       properties: {
         id: { type: ['uuid'] },
-        email: { type : ['string'] },
-        password: { type : ['string'] }
+        defaultIdentity: { type: 'string' }
       }
     }
   }
 
   static get relationMappings() {
+    const Identity = require('./identity')
+
     return {
-      team: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Team,
+      identity: {
+        relation: Model.HasManyRelation,
+        modelClass: Identity,
         join: {
           from: 'users.id',
-          through: {
-            from: 'usersteam.userid',
-            to: 'usersteam.teamid'
-          },
-          to: 'team.id'
-        }
-      }  
+          to: 'identity.user_id',
+        },
+      },
     }
   }
 

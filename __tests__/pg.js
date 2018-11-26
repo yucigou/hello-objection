@@ -1,5 +1,5 @@
 require('dotenv').config()
-// const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid/v4');
 const { Pool, Client } = require('pg')
 
 // console.log("process.env.NODE_ENV: ", process.env.NODE_ENV)
@@ -8,14 +8,14 @@ const { Pool, Client } = require('pg')
 // for connection information
 const pool = new Pool()
 
-const createPerson = () => {
-    const values = ['Yuci', 'Gou'];
-    return pool.query(`INSERT INTO people (firstname, lastname) VALUES($1, $2) RETURNING *`, values);
+const createUser = () => {
+    const values = [uuidv4(), 'ORCID'];
+    return pool.query(`INSERT INTO users (id, default_identity) VALUES($1, $2) RETURNING *`, values);
 }
 
 describe('Pure-postgres database operation', () => {
-  test("Creating person", async () => {
-  	let {rows} = await createPerson();
+  test("Creating user", async () => {
+  	let {rows} = await createUser();
   	console.log('rows', rows)
   })
 })

@@ -2,21 +2,25 @@ import React from 'react';
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
+const SAY_HELLO = gql`
+  {
+    sayHello @client
+  }
+`;
+
+const addExclamation = (client, sayHello) => () => client.writeData({ data: { sayHello: sayHello + '!' }});
+
 const Greeting = () => (
-  <Query
-    query={gql`
-      {
-        sayHello
-      }
-    `}
-  >
-    {({ loading, error, data }) => {
+  <Query query={SAY_HELLO}>
+    {({ loading, error, data, client }) => {
       if (loading) return <p>Loading...</p>;
       if (error) return <p>Error :(</p>;
 
+      const addExclamationHandler = addExclamation(client, data.sayHello)
       return (
       	<div>
-          <p>{data.sayHello}</p>
+          <p>Reply: {data.sayHello}</p>
+          <button onClick={addExclamationHandler}>Add '!'</button>
         </div>
       );
     }}

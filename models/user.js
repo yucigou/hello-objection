@@ -20,7 +20,7 @@ class User extends BaseModel {
     const Identity = require('./identity')
 
     return {
-      identity: {
+      identities: {
         relation: Model.HasManyRelation,
         modelClass: Identity,
         join: {

@@ -6,6 +6,9 @@ const db = require('../db')
 const port = process.env.PORT || 3300
 const app = express()
 
+//serves the index.html
+app.use(express.static(__dirname +'./../'))
+
 require('../config/passport')(passport, db)
 require('../config/express')(app, passport)
 require('../config/routes')(app, passport)

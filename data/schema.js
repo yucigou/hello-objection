@@ -9,6 +9,7 @@ const typeDefs = `
 
     type Query {
       me: User
+      sayHello: String!
     }
 
     type Mutation {

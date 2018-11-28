@@ -11,7 +11,7 @@ const authBearerAndPublic = passport.authenticate(['bearer', 'anonymous'], {
 })
 
 module.exports = (app, passport) => {
-	app.get('/', auth.optional, (req, res) => res.send('Hello World!'))
+	app.get('/hello', auth.optional, (req, res) => res.send('Hello World!'))
 
 	app.get('/me', auth.required, (req, res) => {
 		res.json(req.user)

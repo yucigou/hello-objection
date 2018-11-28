@@ -14,6 +14,10 @@ const resolvers = {
 
       // user is authenticated
       return await User.findById(user.id)
+    },
+
+    sayHello (_, args, ctx) {
+      return 'Hello!'
     }
   },
 

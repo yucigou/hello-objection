@@ -1,0 +1,16 @@
+export default `
+    type User {
+      id: ID!
+    }
+
+    type Query {
+      me: User
+      sayHello: String!
+    }
+
+    type Mutation {
+      signup (username: String!, email: String!, password: String!): String
+      login (username: String!, password: String!): String
+      signin (username: String!, password: String!): String
+    }
+`;

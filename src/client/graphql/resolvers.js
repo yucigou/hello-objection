@@ -9,12 +9,14 @@ const query = gql`
 
 export default {
   Mutation: {
-    postMessage: (_, { text }, { cache }) => {
+    postMessage: (_, variables, { cache }) => {
       const { messageBox } = cache.readQuery({ query });
-      const newMessage = {
-        id: uuid.v4(),
-        message: text
-      }
+      // const newMessage = {
+        // id: uuid.v4(),
+        // message: variables.text,
+        // __typename: 'Message',
+      // }
+      const newMessage = variables.text
       messageBox.push(newMessage)
       
       const data = {

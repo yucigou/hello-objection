@@ -3,35 +3,37 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-class AddTodoView extends Component {
-  // inputEl;
+class PostMessageView extends Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
   handleSubmit(e) {
-    // console.log('this.props: ', this.props)
     e.preventDefault();
-    const { addTodo } = this.props;
-    const text = 'Test' // this.inputEl.value.trim();
+    const { postMessage } = this.props;
+    const text = this.refs.message.value
     if (!text) return;
-    addTodo({ variables: { text } });
-    this.inputEl.value = '';
-  };
+    postMessage({ variables: { text } });
+  }
 
   render() {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
+          <input ref="message" name="message"/>
           <button type="submit">Add Todo</button>
         </form>
       </div>
-    );
+    )
   }
 }
 
-AddTodoView.propTypes = {
-  addTodo: PropTypes.func.isRequired,
+PostMessageView.propTypes = {
+  postMessage: PropTypes.func.isRequired,
 };
 
-const ADD_TODO = gql`
+const POST_MESSAGE = gql`
   mutation postMessage ($text: String!) {
     postMessage(text: $text) @client {
       id
@@ -39,10 +41,10 @@ const ADD_TODO = gql`
   }
 `;
 
-const AddTodo = () => (
-  <Mutation mutation={ADD_TODO}>
-    {addTodo => (<AddTodoView addTodo={addTodo} />)}
+const postMessage = () => (
+  <Mutation mutation={POST_MESSAGE}>
+    {postMessage => (<PostMessageView postMessage={postMessage} />)}
   </Mutation>
 );
 
-export default AddTodo;
+export default postMessage;

@@ -3,7 +3,9 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Greeting from './Greeting.jsx';
-// import defaults from '../graphql/defaults';
+import PostMessage from './PostMessage.jsx';
+import MessageBox from './MessageBox.jsx';
+import defaults from '../graphql/defaults';
 import resolvers from '../graphql/resolvers';
 import typeDefs from '../graphql/typeDefs';
 
@@ -11,7 +13,7 @@ const cache = new InMemoryCache();
 const client = new ApolloClient({
   cache,
   clientState: {
-    // defaults,
+    defaults,
     resolvers,
     typeDefs
   },
@@ -23,6 +25,8 @@ class App extends Component {
     return (
     	<ApolloProvider client={client}>
 	    	<Greeting />
+	    	<PostMessage />
+	    	<MessageBox />
 	    </ApolloProvider>
    	);
   }

@@ -5,19 +5,19 @@ export default `
 
     type Message {
       id: ID!
-      message: String!
+      text: String!
     }
 
     type Query {
       me: User
       sayHello: String!
-      messageBox: [Message]
+      messages: [Message]
     }
 
     type Mutation {
       signup (username: String!, email: String!, password: String!): String
       login (username: String!, password: String!): String
       signin (username: String!, password: String!): String
-      postMessage (message: String!): [Message]
+      postMessage (text: String!): Message
     }
 `;

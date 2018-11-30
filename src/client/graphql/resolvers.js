@@ -2,28 +2,33 @@ import gql from 'graphql-tag';
 const uuid = require('uuid');
 
 const query = gql`
-{
-  messageBox @client
-}
+  query GetMessages {
+    messages @client {
+      id
+      text
+    }
+  }
 `;
 
 export default {
   Mutation: {
-    postMessage: (_, variables, { cache }) => {
-      const { messageBox } = cache.readQuery({ query });
-      // const newMessage = {
-        // id: uuid.v4(),
-        // message: variables.text,
-        // __typename: 'Message',
-      // }
-      const newMessage = variables.text
-      messageBox.push(newMessage)
+    postMessage: (_, { text }, { cache }) => {
+      const previous = cache.readQuery({ query });
+      const newMessage = {
+        id: uuid.v4(),
+        text,
+        __typename: 'MessageItem',
+      }
       
       const data = {
-        messageBox
+        messages: previous.messages.concat([newMessage]),
       };
-      cache.writeData({ data });
-      return messageBox;
+      try {
+       cache.writeData({ data });
+      } catch (err) {
+        console.log('err: ', err)
+      }
+      return newMessage;
     },
   },
 };

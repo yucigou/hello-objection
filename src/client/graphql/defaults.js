@@ -13,5 +13,5 @@ export default {
 	// }]
 
 	// messageBox: ['Hi', 'Hello']
-	messageBox: []
+	messages: []
 }

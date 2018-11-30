@@ -24,7 +24,7 @@ export default {
         messages: previous.messages.concat([newMessage]),
       };
       try {
-       cache.writeData({ data });
+        cache.writeData({ data });
       } catch (err) {
         console.log('err: ', err)
       }

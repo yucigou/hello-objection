@@ -77,7 +77,7 @@ class User extends BaseModel {
     const salt = await bcrypt.genSalt(parseInt(process.env.BCRYPT_SALT_ROUNDS, 10))
 
     this.updateProperties({
-      identity: {
+      identities: {
         username, 
         email, 
         passwordHash: await bcrypt.hash(password, salt),

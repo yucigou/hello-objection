@@ -6,11 +6,6 @@ const db = require('../db')
 const port = process.env.PORT || 3300
 const app = express()
 
-const configTypeDefs = require('../config/typeDefs')
-
-console.log('configTypeDefs: ', configTypeDefs)
-
-
 //serves the index.html
 app.use(express.static(__dirname +'./../'))
 

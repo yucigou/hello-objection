@@ -7,10 +7,15 @@ import PostMessage from './PostMessage.jsx';
 import MessageBox from './MessageBox.jsx';
 import defaults from '../graphql/defaults';
 import resolvers from '../graphql/resolvers';
-import typeDefs from '../graphql/typeDefs';
-import configTypeDefs from '../../../config/typeDefs';
+import clientTypeDefs from '../graphql/typeDefs';
+import commonTypeDefs from '../../../config/typeDefs';
 
-console.log('configTypeDefs: ', configTypeDefs)
+const typeDefs = [
+  commonTypeDefs,
+  clientTypeDefs
+]
+
+console.log('typeDefs: ', typeDefs)
 
 const cache = new InMemoryCache();
 const client = new ApolloClient({

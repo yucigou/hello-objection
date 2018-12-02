@@ -1,3 +1,5 @@
+// Define our schema using the GraphQL schema language
+
 const typeDefs = `
   type User {
     id: ID!
@@ -13,5 +15,6 @@ const typeDefs = `
     login (username: String!, password: String!): String
     signin (username: String!, password: String!): String
   }
-  `
+`
+
 module.exports = typeDefs

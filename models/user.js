@@ -38,7 +38,7 @@ class User extends BaseModel {
   }
   
   static async findByUsername(username) {
-    const user = await User.query().join('identity', 'users.id', 'identity.user_id').where("identity.username", username).eager('identity')
+    const user = await User.query().join('identity', 'users.id', 'identity.user_id').where("identity.username", username).eager('identities')
     console.log('user: ', user)
     return user && user.length > 0 ? user[0] : null
   }
@@ -49,7 +49,7 @@ class User extends BaseModel {
       throw new Error('No user with that username')
     }
 
-    const passwordHashed = user.identity
+    const passwordHashed = user.identities
       .filter(id => id.username === username)
       .map(id => id.passwordHash)
       .reduce((a, b) => b, '')

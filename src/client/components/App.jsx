@@ -8,6 +8,9 @@ import MessageBox from './MessageBox.jsx';
 import defaults from '../graphql/defaults';
 import resolvers from '../graphql/resolvers';
 import typeDefs from '../graphql/typeDefs';
+import configTypeDefs from '../../../config/typeDefs';
+
+console.log('configTypeDefs: ', configTypeDefs)
 
 const cache = new InMemoryCache();
 const client = new ApolloClient({

@@ -3,7 +3,7 @@ const express = require('express')
 const passport = require('passport')
 const db = require('../db')
 
-const port = process.env.PORT || 3300
+const port = process.env.PORT || 3000
 const app = express()
 
 //serves the index.html

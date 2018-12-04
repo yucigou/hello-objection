@@ -25,7 +25,7 @@ const client = new ApolloClient({
     resolvers,
     typeDefs
   },
-  uri: "http://localhost:3300/graphql"
+  uri: "https://xpub-epmc.codingadventure.co.uk/graphql"
 });
 
 class App extends Component {

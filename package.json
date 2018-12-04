@@ -6,7 +6,10 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "webpack": "./node_modules/.bin/webpack -w",
-    "test": "jest"
+    "test": "jest",
+    "server": "node server/index.js",
+    "client": "./node_modules/.bin/webpack",
+    "service": "npm run client && npm run server"
   },
   "keywords": [],
   "author": "",

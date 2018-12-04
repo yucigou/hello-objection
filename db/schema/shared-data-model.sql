@@ -39,6 +39,7 @@ CREATE TABLE manuscript (
     status TEXT NOT NULL,
     form_state TEXT,
     decision TEXT,
+    emsid SERIAL,
     "meta,title" TEXT,
     "meta,article_type" TEXT,
     "meta,article_ids" JSONB[],
@@ -49,6 +50,8 @@ CREATE TABLE manuscript (
     pdf_deposit_id TEXT,
     pdf_deposit_state TEXT
 );
+
+ALTER SEQUENCE manuscript_emsid_seq RESTART WITH 80000;
 
 CREATE INDEX pdfState_idx ON manuscript (pdf_deposit_state);
 
@@ -142,10 +145,7 @@ ALTER TABLE manuscript
   ADD COLUMN "meta,location" JSONB,
   ADD COLUMN "meta,fundingGroup" JSONB[],
   ADD COLUMN "meta,releaseDelay" TEXT,
-  ADD COLUMN "meta,unmatchedJournal" TEXT,
-  ADD COLUMN emsid SERIAL;
-
-ALTER SEQUENCE manuscript_emsid_seq RESTART WITH 80000;
+  ADD COLUMN "meta,unmatchedJournal" TEXT;
 
 -- annotation --
 

@@ -39,6 +39,7 @@ CREATE TABLE manuscript (
     status TEXT NOT NULL,
     form_state TEXT,
     decision TEXT,
+    emsid SERIAL,
     "meta,title" TEXT,
     "meta,article_type" TEXT,
     "meta,article_ids" JSONB[],
@@ -49,6 +50,8 @@ CREATE TABLE manuscript (
     pdf_deposit_id TEXT,
     pdf_deposit_state TEXT
 );
+
+ALTER SEQUENCE manuscript_emsid_seq RESTART WITH 80000;
 
 CREATE INDEX pdfState_idx ON manuscript (pdf_deposit_state);
 
@@ -99,9 +102,9 @@ CREATE TABLE team (
     id UUID,
     role TEXT PRIMARY KEY,
     created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
-    updated TIMESTAMP WITH TIME ZONE,
-    object_id UUID NOT NULL,
-    object_type TEXT NOT NULL
+    updated TIMESTAMP WITH TIME ZONE
+    -- object_id UUID NOT NULL,
+    -- object_type TEXT NOT NULL
 );
 
 CREATE TABLE manuscript_team_users (

@@ -3,6 +3,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import Greeting from './Greeting.jsx';
+import Feed from './Feed.jsx';
 import PostMessage from './PostMessage.jsx';
 import MessageBox from './MessageBox.jsx';
 import defaults from '../graphql/defaults';
@@ -32,6 +33,7 @@ class App extends Component {
   render() {
     return (
     	<ApolloProvider client={client}>
+        <Feed />
 	    	<Greeting />
 	    	<PostMessage />
 	    	<MessageBox />

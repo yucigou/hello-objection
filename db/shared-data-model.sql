@@ -170,3 +170,16 @@ CREATE TABLE annotation
 -- BEFORE UPDATE ON annotations
 -- FOR EACH ROW
 -- EXECUTE PROCEDURE trigger_set_timestamp();
+
+-- chat ---
+CREATE TABLE chat (
+  id uuid DEFAULT uuid_generate_v4() NOT NULL,
+  -- channel
+  manuscript_id UUID NOT NULL REFERENCES manuscript,
+  to UUID REFERENCES users,
+  user_id UUID NOT NULL REFERENCES users,
+  message TEXT NOT NULL,
+  created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  deleted TIMESTAMP WITH TIME ZONE  
+);

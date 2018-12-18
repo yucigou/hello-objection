@@ -2,6 +2,7 @@ require('dotenv').config()
 const jsonwebtoken = require('jsonwebtoken')
 const User = require('../models/user')
 const { auth } = require('./helper')
+const io = require('../server/socket')
 
 const resolvers = {
   Query: {
@@ -17,6 +18,7 @@ const resolvers = {
     },
 
     sayHello (_, args, ctx) {
+      io.getIO().emit('EMS80000', { from: 'Yuci', to: 'David', message: 'Review please.' })
       return 'Hello!'
     }
   },

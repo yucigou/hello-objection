@@ -17,6 +17,13 @@ const server = app.listen(port, () => {
 	console.log('Express app started on port ' + port)
 })
 
+const io = require('./socket').init(server);
+io.on('connection', client => {
+	console.log('Collection received from client')
+  client.on('event', data => { /* … */ });
+  client.on('disconnect', () => { /* … */ });
+});
+
 server.on('close', () => {
 	console.log('Closed express server')
 	db.pool.end(() => {

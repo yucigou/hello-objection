@@ -20,6 +20,11 @@ describe('Test with Knex', () => {
 		expect(version.client.config.client).toBe('pg')
 	})
 
+  test('health check', async () => {
+    let { rows } = await knex.raw("SELECT 1 as num");
+    expect(rows[0].num).toBe(1)
+  })
+
 	test('Add a person', async () => {
 		const people = [{
 			firstname: 'Y',
